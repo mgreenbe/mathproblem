@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+
+<html>
+  
+<head>
+  <script>
+    src="bower_components/webcomponentsjs/webcomponents.min.js"
+  </script>
+  <link rel="import" href="bower_components/polymer/polymer.html">
+  <link rel="import" href="input-list.html">
+  <link rel="import" href="math-problem.html">
+
+</head>
+
+<body>
+<math-problem></math-problem>
+<my-container></my-container>
+
+<dom-module id="my-container">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <form>
+      <input-list items="[[items]]" path="items" label="Item ((index)): "></input-list>
+      <input type="submit">
+    </form>
+  </template>
+ <script>
+  Polymer({
+    is: 'my-container',
+
+    properties: {
+      items: {
+        type: Array,
+        value: [null],
+      }
+    },
+
+    listeners: {
+      REMOVE_LIST_ENTRY: 'removeListEntry',
+      ADD_LIST_ENTRY: 'addListEntry',
+    },
+
+    removeListEntry: function(e) {
+      console.log('Remove List Entry');
+      this.splice(e.detail.path, e.detail.index, 1);
+    },
+
+    addListEntry: function(e) {
+      console.log('Add List Entry');
+      this.push(e.detail.path, null);
+    },
+   });
+</script>
+</dom-module>
+</body>
+</html>

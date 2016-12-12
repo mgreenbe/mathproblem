@@ -1,0 +1,70 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="input-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      button {
+        display: block;
+        width: 100%;
+      }
+    </style>
+    <table>
+      <tbody>
+        <template is="dom-repeat" items="[[items]]">
+          <tr>
+            <td>[[makeLabel(label, index)]]</td>
+            <td><input name="input-[[index]]" value="[[item]]"></td>
+            <td><button on-tap="remove" type="button">&#10006;</button></td>
+          </tr>
+        </template>
+        <tr>
+          <td></td>
+          <td><button on-tap="add" type="button">&#10010;</button></td>
+        </tr>
+      </tbody>
+    </table>
+  </template>
+  <script>
+    Polymer({
+      is: 'input-list',
+
+      properties: {
+        items: {
+          type: Array,
+        },
+        path: {
+          type: String,
+        },
+        label: {
+          type: String,
+        },
+      },
+
+     remove: function(e) {
+        console.log("Remove", e.model.index)
+        this.fire('REMOVE_LIST_ENTRY', {
+          path: this.path,
+          index: e.model.index,
+        });
+      },
+
+      add: function(e) {
+        console.log("Add");
+        this.fire('ADD_LIST_ENTRY', {
+          path: this.path,
+        });
+      },
+
+      makeLabel: function(label, index) {
+        return label.replace("((index))", (index + 1).toString());
+      },
+
+      stringify: function(obj) {
+        return JSON.stringify(obj);
+      },
+    });
+  </script>
+</dom-module>
